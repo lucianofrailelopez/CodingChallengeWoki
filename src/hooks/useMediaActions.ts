@@ -1,6 +1,6 @@
 'use client';
 import { useAppDispatch } from '@/redux/store';
-import { getMovies } from '@/redux/movies/moviesSlice';
+import { getMovies, searchMediaByName } from '@/redux/movies/moviesSlice';
 
 export const useMediaActions = () => {
     const dispatch = useAppDispatch();
@@ -9,7 +9,12 @@ export const useMediaActions = () => {
         dispatch(getMovies());
     };
 
+    const handleSearchMediaByName = (query: string) => {
+        dispatch(searchMediaByName(query));
+    };
+
     return {
         getMedia,
+        handleSearchMediaByName,
     };
 };

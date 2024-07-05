@@ -23,6 +23,16 @@ export const getMovies = createAsyncThunk(
     }
 );
 
+export const searchMediaByName = createAsyncThunk(
+    'media/searchMediaByName',
+    async (query: string) => {
+        const response = await axiosInstance.get('/search/movie', {
+            params: { query },
+        });
+        return response.data.results;
+    },
+);
+
 export const moviesSlice = createSlice({
     name: 'movies',
     initialState,
@@ -42,6 +52,22 @@ export const moviesSlice = createSlice({
                 state.loading = false;
                 state.error = true;
                 state.message = action.error.message;
+            }).addCase(searchMediaByName.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(
+                searchMediaByName.fulfilled,
+                (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.list = action.payload;
+                    state.error = true;
+                    state.message = undefined;
+                },
+            )
+            .addCase(searchMediaByName.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
             });
     },
 });

@@ -20,7 +20,7 @@ export const Card = ({ item }: CardProps) => {
                 width={500}
                 height={500}
             />
-            <span className="absolute top-2 left-2 bg-[#ffffffaa] px-2 text-sm rounded-lg font-semibold">
+            <span className="absolute top-2 left-2 bg-[#ffffffaa] px-2 text-sm rounded-lg font-semibold text-black">
                 {item?.release_date.split('-')[0]}
             </span>
             <h2 className="absolute p-2 bottom-0 left-0 font-semibold text-white bg-gradient-to-b from-transparent to-black w-full">
