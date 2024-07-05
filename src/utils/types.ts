@@ -1,4 +1,4 @@
-export interface Movie {
+export interface MediaInterface {
     adult: boolean;
     backdrop_path: string;
     genre_ids: number[];
@@ -16,7 +16,7 @@ export interface Movie {
 }
 
 export interface MoviesState {
-    list: Movie[];
+    list: MediaInterface[];
     loading: boolean;
     error: boolean;
     message: string | undefined;
