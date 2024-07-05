@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import moviesSlice from "./movies/moviesSlice";
+import genresSlice from "./genres/genresSlice";
 
 const store = configureStore({
     reducer: {
         movies: moviesSlice,
+        genres: genresSlice,
     },
 });
 

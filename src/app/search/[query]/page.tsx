@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { useMediaActions } from '@/hooks/useMediaActions';
+import { useMediaActions } from '@/hooks/useMoviesActions';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useParams } from 'next/navigation';

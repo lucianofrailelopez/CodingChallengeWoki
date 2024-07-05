@@ -2,11 +2,11 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useMediaActions } from '@/hooks/useMediaActions';
+import { useMoviesActions } from '@/hooks/useMoviesActions';
 import { CollectionLayout } from '@/components/CollectionLayout';
 
 export default function Home() {
-  const { getMedia } = useMediaActions();
+  const { getMedia } = useMoviesActions();
 
   const movies = useSelector((state: RootState) => state.movies.list);
 

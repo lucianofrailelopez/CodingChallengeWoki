@@ -1,3 +1,15 @@
+export interface GenreInterface {
+    id?: number | undefined;
+    name?: string;
+}
+
+export interface GenreState {
+    list: GenreInterface[];
+    loading: boolean;
+    error: boolean;
+    message: string | null;
+}
+
 export interface MediaInterface {
     adult: boolean;
     backdrop_path: string;

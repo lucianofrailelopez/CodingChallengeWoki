@@ -33,6 +33,16 @@ export const searchMediaByName = createAsyncThunk(
     },
 );
 
+export const getMoviesByGenre = createAsyncThunk(
+    'media/getMoviesByGenre',
+    async (genre: number) => {
+        const response = await axiosInstance.get('/discover/movie', {
+            params: { with_genres: genre },
+        });
+        return response.data.results;
+    },
+);
+
 export const moviesSlice = createSlice({
     name: 'movies',
     initialState,
@@ -65,6 +75,23 @@ export const moviesSlice = createSlice({
                 },
             )
             .addCase(searchMediaByName.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
+            })
+            .addCase(getMoviesByGenre.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(
+                getMoviesByGenre.fulfilled,
+                (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.list = action.payload;
+                    state.error = true;
+                    state.message = undefined;
+                },
+            )
+            .addCase(getMoviesByGenre.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
                 state.message = action.error.message || 'Something went wrong';

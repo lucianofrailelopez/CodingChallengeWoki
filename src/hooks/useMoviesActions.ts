@@ -1,8 +1,8 @@
 'use client';
 import { useAppDispatch } from '@/redux/store';
-import { getMovies, searchMediaByName } from '@/redux/movies/moviesSlice';
+import { getMovies, searchMediaByName, getMoviesByGenre } from '@/redux/movies/moviesSlice';
 
-export const useMediaActions = () => {
+export const useMoviesActions = () => {
     const dispatch = useAppDispatch();
 
     const getMedia = () => {
@@ -13,8 +13,13 @@ export const useMediaActions = () => {
         dispatch(searchMediaByName(query));
     };
 
+    const filterByGenreMovie = (genre: number) => {
+        dispatch(getMoviesByGenre(genre));
+    };
+
     return {
         getMedia,
         handleSearchMediaByName,
+        filterByGenreMovie,
     };
 };
