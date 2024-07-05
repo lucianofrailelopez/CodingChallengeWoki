@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Movies Aplication
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Woki's Coding Challenge
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Search Functionality:** Users can search for movies by title, genre, or keywords.
+- **Movie Details:** Detailed information about each movie, including title, release date, genres, synopsis, and rating is displayed.
+- **Similar Movies:** Lists of similar movies are shown based on the genre of the selected movie.
+- **Responsive Design:** Designed using Material UI components for a visually appealing and responsive user interface.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technical Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Framework:** Next.js with TypeScript.
+- **State Management:** React Redux Toolkit.
+- **API Calls:** Axios for fetching data from TMDb API.
+- **Styling:** Material UI for consistent and attractive UI components and Tailwind.
+- **Routing:** Next.js dynamic routing for smooth navigation between pages.
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+To run this project locally:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Install dependencies: `npm install`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. Set up environment variables for TMDb API key.
 
-## Deploy on Vercel
+   - Create .env.local file in main folder
+     NEXT_PUBLIC_API_URL=https://api.themoviedb.org/3
+     NEXT_PUBLIC_API_KEY=1f413e4f0aa48a5c40e5080ceb7c9381
+     NEXT_PUBLIC_IMAGE=https://image.tmdb.org/t/p/w500
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Start the development server: `npm run dev`
