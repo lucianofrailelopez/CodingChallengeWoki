@@ -60,7 +60,7 @@ export const Header = () => {
                     labelId="genre-select-label"
                     label="Genre"
                     id="genre-select"
-                    value={selectedGenre?.id}
+                    value={selectedGenre?.id || ''}
                     onChange={(event: any) => {
                         setSelectedGenre(genres.find((genre: GenreInterface) => genre.id === event.target.value));
                         filterByGenreMovie(event.target.value);

@@ -19,6 +19,7 @@ export const Card = ({ item }: CardProps) => {
                 alt="poster"
                 width={500}
                 height={500}
+                priority
             />
             <span className="absolute top-2 left-2 bg-[#ffffffaa] px-2 text-sm rounded-lg font-semibold text-black">
                 {item?.release_date.split('-')[0]}
