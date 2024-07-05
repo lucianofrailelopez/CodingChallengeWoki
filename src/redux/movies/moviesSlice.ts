@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { MoviesState } from '@/utils/types';
+import { addAttributes } from '@/utils/helpers';
 import axiosInstance from '@/services/api/axiosInstance';
 
 const initialState: MoviesState = {
     list: [],
+    similarMoviesList: [],
     loading: false,
     error: false,
     message: '',
@@ -21,6 +23,23 @@ export const getMovies = createAsyncThunk(
 
         return response.data;
     }
+);
+
+export const getMoviesById = createAsyncThunk('movies/fetchMoviesById', async (movieId: string | string[]) => {
+    const response = await axiosInstance.get(`/movie/${movieId}`);
+
+    return response.data;
+});
+
+
+export const getSimilarMovies = createAsyncThunk(
+    'movies/getSimilarMovies',
+    async (param: string | string[]) => {
+        const response = await axiosInstance.get(`/movie/${param}/similar`);
+
+        const data = addAttributes(response.data.results).slice(0, 6);
+        return data;
+    },
 );
 
 export const searchMediaByName = createAsyncThunk(
@@ -62,7 +81,39 @@ export const moviesSlice = createSlice({
                 state.loading = false;
                 state.error = true;
                 state.message = action.error.message;
-            }).addCase(searchMediaByName.pending, (state) => {
+            })
+            .addCase(getMoviesById.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getMoviesById.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.list = [action.payload];
+                state.error = true;
+                state.message = undefined;
+            })
+            .addCase(getMoviesById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
+            })
+            .addCase(getSimilarMovies.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(
+                getSimilarMovies.fulfilled,
+                (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.similarMoviesList = action.payload;
+                    state.error = true;
+                    state.message = undefined;
+                },
+            )
+            .addCase(getSimilarMovies.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
+            })
+            .addCase(searchMediaByName.pending, (state) => {
                 state.loading = true;
             })
             .addCase(

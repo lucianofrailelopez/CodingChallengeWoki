@@ -25,10 +25,12 @@ export interface MediaInterface {
     video: boolean;
     vote_average: number;
     vote_count: number;
+    genres?: GenreInterface[];
 }
 
 export interface MoviesState {
     list: MediaInterface[];
+    similarMoviesList: MediaInterface[];
     loading: boolean;
     error: boolean;
     message: string | undefined;

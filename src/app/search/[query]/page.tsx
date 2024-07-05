@@ -1,13 +1,13 @@
 'use client';
 import { useEffect } from 'react';
-import { useMediaActions } from '@/hooks/useMoviesActions';
+import { useMoviesActions } from '@/hooks/useMoviesActions';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useParams } from 'next/navigation';
 import { CollectionLayout } from '@/components/CollectionLayout';
 
 export default function Search() {
-    const { handleSearchMediaByName } = useMediaActions();
+    const { handleSearchMediaByName } = useMoviesActions();
     const { query } = useParams();
     const movies = useSelector((state: RootState) => state.movies.list);
 

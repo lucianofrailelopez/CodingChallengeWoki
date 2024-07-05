@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { Select, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { useMoviesActions } from '@/hooks/useMoviesActions';
 import { GenreInterface } from '@/utils/types';
@@ -10,6 +9,7 @@ import { Search } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/redux/store';
+import Link from 'next/link';
 
 export const Header = () => {
     const [selectedGenre, setSelectedGenre] = useState<GenreInterface | null>();
@@ -30,7 +30,7 @@ export const Header = () => {
 
     return (
         <header className="flex w-full flex-col items-center gap-2 py-4 px-10 bg-gradient-to-t to-[#121b24] md:flex-row md:justify-between">
-            <h1 className="text-white text-2xl">MOVIEFLIX</h1>
+            <Link className="text-white text-2xl" href={'/'}>MOVIEFLIX</Link>
             <FormControl variant="outlined" fullWidth size='small' sx={{
                 maxWidth: 300,
                 color: 'white',

@@ -1,5 +1,6 @@
-import { MediaInterface } from '@/utils/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { MediaInterface } from '@/utils/types';
 import { Rating } from '@/components/Rating';
 
 interface CardProps {
@@ -8,14 +9,20 @@ interface CardProps {
 
 export const Card = ({ item }: CardProps) => {
     const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE;
+    const router = useRouter();
+
+    const srcUrl = item?.poster_path ? `${imageBaseUrl}${item?.poster_path}` : `/assets/default-movie.png`;
 
     return (
         <div
             className={`hover:cursor-pointer relative hover:scale-[1.01] transition-all`}
+            onClick={() => {
+                router.push(`/movie/${item.id}`);
+            }}
         >
             <Image
                 className="relative"
-                src={`${imageBaseUrl}${item?.poster_path}`}
+                src={srcUrl}
                 alt="poster"
                 width={500}
                 height={500}
@@ -27,9 +34,9 @@ export const Card = ({ item }: CardProps) => {
             <h2 className="absolute p-2 bottom-0 left-0 font-semibold text-white bg-gradient-to-b from-transparent to-black w-full">
                 {item?.title}
             </h2>
-            <div className="absolute top-0 right-0">
+            {item?.vote_average > 0 && <div className="absolute top-0 right-0">
                 <Rating movieRating={item?.vote_average} />
-            </div>
+            </div>}
         </div>
     );
 };
