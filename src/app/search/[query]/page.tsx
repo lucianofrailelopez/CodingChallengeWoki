@@ -24,7 +24,7 @@ export default function Search() {
         </>
     ) : (
         <div className="flex flex-col justify-center items-center h-screen">
-            <p className="text-white text-2xl">{`No Results found :(`}</p>
+            <p className="text-[#FF6F61] text-2xl">{`No Results found :(`}</p>
         </div>
     );
 }

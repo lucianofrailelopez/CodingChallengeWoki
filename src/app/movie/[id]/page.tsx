@@ -28,19 +28,19 @@ export default function Movie() {
     }, []);
 
     return (
-        <div className="px-10 pt-20">
+        <div className="px-10 pt-20 bg-[#fff] dark:bg-[#111]">
             <div className="flex flex-col md:flex-row md:gap-8">
                 <Image
                     src={srcUrl}
                     alt="poster"
-                    className="mb-4 md:mb-0 self-center"
+                    className="mb-4 md:mb-0 self-center "
                     width={300}
                     height={400}
                     priority
                 />
                 <div>
                     <div className="flex">
-                        <h2 className="text-3xl font-semibold text-white">
+                        <h2 className="text-3xl font-semibold text-black dark:text-white">
                             {movies[0]?.title}
                             {movies[0]?.release_date && (
                                 <span className="text-[#ccc] text-3xl ml-2">
@@ -52,9 +52,9 @@ export default function Movie() {
                         </h2>
                     </div>
                     {movies[0]?.genres && (
-                        <ul className="flex gap-4 text-white mt-1">
+                        <ul className="flex gap-4 mt-1">
                             {movies[0]?.genres.map((genre: any) => (
-                                <li key={genre.id} className="text-[#eee] text-sm">
+                                <li key={genre.id} className="text-[#111] text-sm dark:text-[#eee]">
                                     ● {genre.name}
                                 </li>
                             ))}
@@ -63,13 +63,13 @@ export default function Movie() {
                     {movies[0]?.vote_average > 0 && (
                         <div className="mt-5 flex items-center gap-2">
                             <Rating movieRating={movies[0]?.vote_average} />
-                            <span className="text-[#eee] text-sm">
+                            <span className="text-[#111] text-sm dark:text-[#eee]">
                                 {movies[0]?.vote_count} user votes
                             </span>
                         </div>
                     )}
-                    <h3 className="text-xl text-white font-semibold mt-5">Overview</h3>
-                    <p className="text-[#ccc] mt-2">{movies[0]?.overview}</p>
+                    <h3 className="text-xl text-[#111] font-semibold mt-5 dark:text-white">Overview</h3>
+                    <p className="text-[#111] mt-2 dark:text-[#eee]">{movies[0]?.overview}</p>
                 </div>
             </div>
             <div>

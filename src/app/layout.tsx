@@ -18,10 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-[#111]`}>
         <Providers>
           <Header />
           {children}
+          <footer className="pt-10 bg-[#fff] text-[#111] p-4 text-center dark:bg-[#111] dark:text-[#fff]">
+            <p>© 2024 All rights reserved by Movieflix</p>
+          </footer>
         </Providers>
       </body>
     </html>

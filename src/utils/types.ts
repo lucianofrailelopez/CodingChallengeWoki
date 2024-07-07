@@ -35,3 +35,7 @@ export interface MoviesState {
     error: boolean;
     message: string | undefined;
 }
+
+export interface ThemeState {
+    darkMode: boolean;
+}

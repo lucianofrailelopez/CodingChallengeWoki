@@ -6,10 +6,10 @@ import React from 'react';
 
 export const CollectionLayout = ({ title, movies }: { title: string; movies: MediaInterface[] }) => {
     return (
-        <div className="px-10 mt-20">
+        <div className="px-10 pt-20 bg-[#fff] dark:bg-[#111]">
             <h2 className="text-xl text-white font-semibold mb-2 flex items-center">
-                <MovieFilter className="text-[#127bd5] mr-2" />
-                {title}
+                <MovieFilter className="text-[#FF6F61] mr-2" />
+                <span className='text-[#FF6F61]'>{title}</span>
             </h2>
             <Grid container spacing={2}>
                 {movies?.map((movie: any) => (

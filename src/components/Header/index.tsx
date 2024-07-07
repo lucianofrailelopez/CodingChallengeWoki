@@ -1,27 +1,33 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { toggleDarkMode } from '@/redux/theme/themeSlice';
 import { useRouter, useParams } from 'next/navigation';
-import { Select, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
+import Link from 'next/link';
+import { Select, TextField, MenuItem, FormControl, InputLabel, Switch, Box } from '@mui/material';
 import { useMoviesActions } from '@/hooks/useMoviesActions';
 import { GenreInterface } from '@/utils/types';
-import { getGenresList } from '@/redux/genres/genresSlice';
-import { Search } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useAppDispatch } from '@/redux/store';
-import Link from 'next/link';
+import { Search, BrightnessHighOutlined, Brightness2Outlined } from '@mui/icons-material';
 
 export const Header = () => {
     const [selectedGenre, setSelectedGenre] = useState<GenreInterface | null>();
-    const { filterByGenreMovie } = useMoviesActions();
-    const dispatch = useAppDispatch();
+    const { getGenres, filterByGenreMovie, toggleTheme } = useMoviesActions();
     const genres = useSelector((state: any) => state.genres.list);
+    const theme = useSelector((state: any) => state.theme.darkMode);
     const router = useRouter();
     const { query } = useParams();
 
     useEffect(() => {
-        dispatch(getGenresList());
+        getGenres();
     }, []);
+
+    useEffect(() => {
+        if (theme) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
 
     const handleSearch = (event: any) => {
         event.preventDefault();
@@ -29,33 +35,27 @@ export const Header = () => {
     };
 
     return (
-        <header className="flex w-full flex-col items-center gap-2 py-4 px-10 bg-gradient-to-t to-[#121b24] md:flex-row md:justify-between">
-            <Link className="text-white text-2xl" href={'/'}>MOVIEFLIX</Link>
-            <FormControl variant="outlined" fullWidth size='small' sx={{
-                maxWidth: 300,
-                color: 'white',
-                backgroundColor: '#000000',
-                '.MuiOutlinedInput-root': {
-                    '& fieldset': {
-                        borderColor: 'white',
+        <header className="flex w-full flex-col items-center gap-2 py-4 px-10 bg-[#fff] border-b dark:bg-[#000] md:flex-row md:justify-between">
+            <Link className="text-[#FF6F61] text-2xl" href={'/'}>MOVIEFLIX</Link>
+            <FormControl variant="outlined" fullWidth size='small'
+                className='max-w-[300px]'
+                sx={{
+                    '.MuiOutlinedInput-root': {
+                        '& fieldset, &:hover fieldset, &.Mui-focused fieldset': {
+                            borderColor: '#FF6F61',
+                        },
                     },
-                    '&:hover fieldset': {
-                        borderColor: 'white',
+                    '.MuiSvgIcon-root': {
+                        color: '#FF6F61',
                     },
-                    '&.Mui-focused fieldset': {
-                        borderColor: 'white',
-                    },
-                },
-                '.MuiSvgIcon-root': {
-                    color: 'white',
-                },
-            }}>
+                }}>
                 <InputLabel id="genre-select-label" sx={{
-                    color: 'white',
-                    '&.Mui-focused': {
-                        color: 'white',
+                    color: '#FF6F61', '&.Mui-focused': {
+                        color: '#FF6F61',
                     },
-                }}>Genre</InputLabel>
+                }}>
+                    Genre
+                </InputLabel>
                 <Select
                     labelId="genre-select-label"
                     label="Genre"
@@ -65,25 +65,12 @@ export const Header = () => {
                         setSelectedGenre(genres.find((genre: GenreInterface) => genre.id === event.target.value));
                         filterByGenreMovie(event.target.value);
                     }}
-                    MenuProps={{
-                        PaperProps: {
-                            sx: {
-                                color: 'white',
-                                backgroundColor: '#000000',
-                            },
-                        },
-                    }}
-                    sx={{
-                        color: 'white',
-                        '& .MuiSelect-icon': {
-                            color: 'white',
-                        },
-                    }}
+                    className='bg-[#fff] dark:bg-[#000000]'
                 >
                     {genres.map((genre: GenreInterface) => (
                         <MenuItem key={genre.id} value={genre.id} sx={{
                             '&:hover': {
-                                backgroundColor: '#333333',
+                                backgroundColor: '#FF6F61',
                                 color: 'white',
                             },
                         }}>
@@ -92,7 +79,31 @@ export const Header = () => {
                     ))}
                 </Select>
             </FormControl>
-
+            <Switch
+                checked={theme}
+                onChange={() => toggleTheme()}
+                inputProps={{ 'aria-label': 'controlled' }}
+                icon={<Box sx={{
+                    borderRadius: '50%',
+                    backgroundColor: '#FF6F61',
+                }}>
+                    <BrightnessHighOutlined sx={{ margin: '2px' }} />
+                </Box>}
+                checkedIcon={<Box sx={{
+                    borderRadius: '50%',
+                    backgroundColor: '#FF6F61',
+                }}>
+                    <Brightness2Outlined sx={{ margin: '2px', color: 'white' }} />
+                </Box>}
+                sx={{
+                    '& .MuiSwitch-switchBase.Mui-checked ': {
+                        color: '#FF6F61',
+                    },
+                    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                        backgroundColor: '#FF6F61',
+                    },
+                }}
+            />
             <form
                 onSubmit={(e: any) => {
                     handleSearch(e);
@@ -108,29 +119,26 @@ export const Header = () => {
                     size="small"
                     fullWidth
                     InputProps={{
-                        startAdornment: <Search className="text-white mr-2" />,
+                        startAdornment: <Search sx={{ color: '#FF6F61', marginRight: 2 }} />,
                     }}
                     sx={{
                         maxWidth: 300,
-                        color: 'white',
-                        backgroundColor: '#77777722',
+                        backgroundColor: `${theme ? '#' : '#fff'}`,
                         '& .MuiInputBase-input': {
-                            color: 'white',
+                            color: '#FF6F61',
                         },
-                        '& .MuiOutlinedInput-root': {
-                            '&:hover fieldset': {
-                                borderColor: 'white',
-                            },
-                            '&.Mui-focused fieldset': {
-                                borderColor: 'white',
+                        '.MuiOutlinedInput-root': {
+                            '& fieldset, &:hover fieldset, &.Mui-focused fieldset': {
+                                borderColor: '#FF6F61',
                             },
                         },
+
                     }}
                     onChange={(e: any) => {
                         if (e.target.value === '') router.push('/');
                     }}
                 />
             </form>
-        </header>
+        </header >
     );
 };
