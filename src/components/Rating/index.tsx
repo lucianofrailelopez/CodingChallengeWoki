@@ -14,6 +14,7 @@ export const Rating = ({ movieRating }: any) => {
             <CircularProgress
                 variant="determinate"
                 value={Math.round(movieRating * 10)}
+                sx={{ color: '#FF6F61' }}
             />
             <Box
                 sx={{

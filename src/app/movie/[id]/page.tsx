@@ -6,24 +6,26 @@ import { RootState } from '@/redux/store';
 import { useParams } from 'next/navigation';
 import { Rating } from '@/components/Rating';
 import { CollectionLayout } from '@/components/CollectionLayout';
+import { TrailerLayout } from '@/components/TrailerLayout';
 import Image from 'next/image';
 
 export default function Movie() {
     const { id } = useParams();
     const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE;
-    const { getMovieById, getSimilarMoviesById } = useMoviesActions();
+    const { getMovieById, getSimilarMoviesById, getVideoKey } = useMoviesActions();
     const movies = useSelector((state: RootState) => state.movies.list);
+    const trailerKey = useSelector((state: RootState) => state.movies.trailerKey);
     const similarMovies = useSelector(
         (state: RootState) => state.movies.similarMoviesList,
     );
 
     const srcUrl = movies[0]?.poster_path ? `${imageBaseUrl}${movies[0].poster_path}` : `/assets/default-movie.png`;
 
-
     useEffect(() => {
         if (id) {
             getMovieById(id);
             getSimilarMoviesById(id);
+            getVideoKey(id);
         }
     }, []);
 
@@ -71,6 +73,9 @@ export default function Movie() {
                     <h3 className="text-xl text-[#111] font-semibold mt-5 dark:text-white">Overview</h3>
                     <p className="text-[#111] mt-2 dark:text-[#eee]">{movies[0]?.overview}</p>
                 </div>
+            </div>
+            <div>
+                <TrailerLayout trailerKey={trailerKey || ''} />
             </div>
             <div>
                 {similarMovies.length > 0 ? (<CollectionLayout title='Recommended' movies={similarMovies} />) : (

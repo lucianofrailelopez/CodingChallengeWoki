@@ -31,6 +31,7 @@ export interface MediaInterface {
 export interface MoviesState {
     list: MediaInterface[];
     similarMoviesList: MediaInterface[];
+    trailerKey: string | undefined;
     loading: boolean;
     error: boolean;
     message: string | undefined;

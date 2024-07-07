@@ -6,6 +6,7 @@ import axiosInstance from '@/services/api/axiosInstance';
 const initialState: MoviesState = {
     list: [],
     similarMoviesList: [],
+    trailerKey: undefined,
     loading: false,
     error: false,
     message: '',
@@ -43,7 +44,7 @@ export const getSimilarMovies = createAsyncThunk(
 );
 
 export const searchMediaByName = createAsyncThunk(
-    'media/searchMediaByName',
+    'movies/searchMediaByName',
     async (query: string) => {
         const response = await axiosInstance.get('/search/movie', {
             params: { query },
@@ -53,12 +54,23 @@ export const searchMediaByName = createAsyncThunk(
 );
 
 export const getMoviesByGenre = createAsyncThunk(
-    'media/getMoviesByGenre',
+    'movies/getMoviesByGenre',
     async (genre: number) => {
         const response = await axiosInstance.get('/discover/movie', {
             params: { with_genres: genre },
         });
         return response.data.results;
+    },
+);
+
+export const getMoviesVideoById = createAsyncThunk(
+    'movies/getMoviesById',
+    async (id: string | string[]) => {
+        const response = await axiosInstance.get(`/movie/${id}/videos`);
+        const trailer = response.data.results.find(
+            (item: any) => item.type === "Trailer"
+        );
+        return trailer?.key;
     },
 );
 
@@ -143,6 +155,20 @@ export const moviesSlice = createSlice({
                 },
             )
             .addCase(getMoviesByGenre.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
+            })
+            .addCase(getMoviesVideoById.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getMoviesVideoById.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.trailerKey = action.payload;
+                state.error = true;
+                state.message = undefined;
+            })
+            .addCase(getMoviesVideoById.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
                 state.message = action.error.message || 'Something went wrong';
