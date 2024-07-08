@@ -7,11 +7,12 @@ import { CollectionLayout } from '@/components/CollectionLayout';
 import { CircularProgress } from '@mui/material';
 
 export default function Home() {
-  const { getMedia } = useMoviesActions();
+  const { getMedia, getFavorites } = useMoviesActions();
   const { list, loading } = useSelector((state: RootState) => state.movies);
 
   useEffect(() => {
     getMedia();
+    getFavorites();
   }, []);
 
 

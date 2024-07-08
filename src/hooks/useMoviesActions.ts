@@ -1,6 +1,6 @@
 'use client';
 import { useAppDispatch } from '@/redux/store';
-import { getMovies, getMoviesById, searchMediaByName, getMoviesByGenre, getSimilarMovies, getMoviesVideoById } from '@/redux/movies/moviesSlice';
+import { getMovies, getMoviesById, searchMediaByName, getMoviesByGenre, getSimilarMovies, getMoviesVideoById, getFavoriteMovies } from '@/redux/movies/moviesSlice';
 import { getGenresList } from '@/redux/genres/genresSlice';
 import { toggleDarkMode } from '@/redux/theme/themeSlice';
 
@@ -39,6 +39,10 @@ export const useMoviesActions = () => {
         dispatch(getMoviesVideoById(id));
     };
 
+    const getFavorites = () => {
+        dispatch(getFavoriteMovies());
+    };
+
     return {
         getMedia,
         handleSearchMediaByName,
@@ -48,5 +52,6 @@ export const useMoviesActions = () => {
         getSimilarMoviesById,
         toggleTheme,
         getVideoKey,
+        getFavorites,
     };
 };

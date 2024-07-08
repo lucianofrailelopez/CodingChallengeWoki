@@ -74,6 +74,15 @@ export const getMoviesVideoById = createAsyncThunk(
     },
 );
 
+export const getFavoriteMovies = createAsyncThunk(
+    'movies/getFavoriteMovies',
+    async () => {
+        const accound_id = localStorage.getItem('tokenUser');
+        const response = await axiosInstance.get(`/account/${accound_id}/favorite/movies`);
+        console.log('reduxresponse', response.data);
+    }
+)
+
 export const moviesSlice = createSlice({
     name: 'movies',
     initialState,
