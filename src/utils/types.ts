@@ -40,3 +40,21 @@ export interface MoviesState {
 export interface ThemeState {
     darkMode: boolean;
 }
+
+export interface AuthState {
+    isAuthenticated: boolean;
+    userName: string | null;
+    tokenUser?: string | null;
+}
+
+export interface userMoviesState {
+    list: MediaInterface[];
+    loading: boolean;
+    error: boolean;
+    message: string | undefined;
+}
+
+export interface userMovieInterface {
+    token: string | undefined;
+    movie_id: number;
+}

@@ -1,11 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { toggleDarkMode } from '@/redux/theme/themeSlice';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Select, TextField, MenuItem, FormControl, InputLabel, Switch, Box } from '@mui/material';
+import { Select, TextField, MenuItem, FormControl, InputLabel, Switch, Box, Button } from '@mui/material';
 import { useMoviesActions } from '@/hooks/useMoviesActions';
+import { useAuthActions } from "@/hooks/useAuthActions";
 import { GenreInterface } from '@/utils/types';
 import { Search, BrightnessHighOutlined, Brightness2Outlined } from '@mui/icons-material';
 
@@ -14,8 +14,10 @@ export const Header = () => {
     const { getGenres, filterByGenreMovie, toggleTheme } = useMoviesActions();
     const genres = useSelector((state: any) => state.genres.list);
     const theme = useSelector((state: any) => state.theme.darkMode);
+    const { isAuthenticated } = useSelector((state: any) => state.auth);
     const router = useRouter();
     const { query } = useParams();
+    const { logoutAction } = useAuthActions();
 
     useEffect(() => {
         getGenres();
@@ -32,6 +34,12 @@ export const Header = () => {
     const handleSearch = (event: any) => {
         event.preventDefault();
         router.push(`/search/${event.target[0].value}`);
+    };
+
+    const handleLogout = () => {
+        logoutAction();
+        localStorage.removeItem("request_token");
+        router.push("/");
     };
 
     return (
@@ -139,6 +147,25 @@ export const Header = () => {
                     }}
                 />
             </form>
+            {isAuthenticated ? (
+                <Button onClick={handleLogout} variant="contained">
+                    Logout
+                </Button>
+            ) : (
+                <Button
+                    onClick={() => router.push("/login")}
+                    variant="contained"
+                    sx={{
+                        backgroundColor: "#FF6F61",
+                        color: "white",
+                        "&:hover": {
+                            backgroundColor: "#FF4A3B",
+                        },
+                    }}
+                >
+                    Login
+                </Button>
+            )}
         </header >
     );
 };

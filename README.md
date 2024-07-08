@@ -10,6 +10,8 @@ Woki's Coding Challenge
 - **Movie Details:** Detailed information about each movie, including title, release date, genres, synopsis, and rating is displayed.
 - **Similar Movies:** Lists of similar movies are shown based on the genre of the selected movie.
 - **Responsive Design:** Designed using Material UI components for a visually appealing and responsive user interface.
+- **User Authentication:**
+  Users can log in to the application to access personalized features and save their preferences
 
 ## Technical Stack
 

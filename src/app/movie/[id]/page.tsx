@@ -1,13 +1,15 @@
 'use client';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMoviesActions } from '@/hooks/useMoviesActions';
 import { RootState } from '@/redux/store';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import { Rating } from '@/components/Rating';
 import { CollectionLayout } from '@/components/CollectionLayout';
 import { TrailerLayout } from '@/components/TrailerLayout';
-import Image from 'next/image';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export default function Movie() {
     const { id } = useParams();
@@ -18,6 +20,17 @@ export default function Movie() {
     const similarMovies = useSelector(
         (state: RootState) => state.movies.similarMoviesList,
     );
+    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+    const [isFavorite, setIsFavorite] = useState(false);
+
+
+    const handleFavoriteClick = () => {
+        if (!isAuthenticated) {
+            alert("You need to be logged in to add movies to favorites.");
+            return;
+        }
+        setIsFavorite(!isFavorite);
+    };
 
     const srcUrl = movies[0]?.poster_path ? `${imageBaseUrl}${movies[0].poster_path}` : `/assets/default-movie.png`;
 
@@ -52,6 +65,18 @@ export default function Movie() {
                                 </span>
                             )}
                         </h2>
+                        <button
+                            onClick={() => handleFavoriteClick()}
+                            className={`ml-4 text-2xl ${isAuthenticated ? "cursor-pointer" : "cursor-not-allowed"
+                                }`}
+                            disabled={!isAuthenticated}
+                        >
+                            {isFavorite ? (
+                                <FavoriteIcon className="text-orange-500" />
+                            ) : (
+                                <FavoriteBorderIcon className="text-gray-500 dark:text-white" />
+                            )}
+                        </button>
                     </div>
                     {movies[0]?.genres && (
                         <ul className="flex gap-4 mt-1">

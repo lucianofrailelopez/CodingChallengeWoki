@@ -8,12 +8,12 @@ import { CircularProgress } from '@mui/material';
 
 export default function Home() {
   const { getMedia } = useMoviesActions();
-
   const { list, loading } = useSelector((state: RootState) => state.movies);
 
   useEffect(() => {
     getMedia();
   }, []);
+
 
   return (
     loading ? (<div className="flex h-screen w-screen items-center justify-center">
