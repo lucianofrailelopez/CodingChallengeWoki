@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { loginSuccess, logout, accessToken } from '@/redux/auth/authSlice';
+import { loginSuccess, logout, accessToken, handleLogin } from '@/redux/auth/authSlice';
 
 export const useAuthActions = () => {
   const dispatch = useDispatch();
@@ -13,13 +13,19 @@ export const useAuthActions = () => {
     dispatch(logout());
   };
 
-  const accessTokenAction = (token: string) => {
-    dispatch(accessToken(token));
+  const accessTokenAction = (token: any) => {
+    const { id } = token;
+    dispatch(accessToken(id));
   };
+
+  // const loginBro = () => {
+  //   dispatch(handleLogin());
+  // };
 
   return {
     loginSuccessAction,
     logoutAction,
-    accessTokenAction
+    accessTokenAction,
+    // loginBro
   };
 };

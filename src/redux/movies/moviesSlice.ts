@@ -6,6 +6,8 @@ import axiosInstance from '@/services/api/axiosInstance';
 const initialState: MoviesState = {
     list: [],
     similarMoviesList: [],
+    favoriteMovieList: [],
+    reccomendedMoviesList: [],
     trailerKey: undefined,
     loading: false,
     error: false,
@@ -28,7 +30,6 @@ export const getMovies = createAsyncThunk(
 
 export const getMoviesById = createAsyncThunk('movies/fetchMoviesById', async (movieId: string | string[]) => {
     const response = await axiosInstance.get(`/movie/${movieId}`);
-
     return response.data;
 });
 
@@ -42,6 +43,46 @@ export const getSimilarMovies = createAsyncThunk(
         return data;
     },
 );
+
+export const getFavoriteMoviesList = createAsyncThunk(
+    'movies/getFavoriteMoviesList', async () => {
+        const userId = localStorage.getItem('tokenUser');
+        const response = await axiosInstance.get(`/account/${userId}/favorite/movies`, {
+            headers: {
+                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN_AUTH}`,
+            }
+        });
+
+        return response.data.results;
+    }
+)
+
+export const addFavoriteMovie = createAsyncThunk(
+    'movies/addFavoriteMovie', async ({ movieId, isFavorite }: { movieId: number, isFavorite: boolean }) => {
+        console.log(movieId, isFavorite);
+
+        const userId = localStorage.getItem('tokenUser');
+        const response = await axiosInstance.post(`/account/${userId}/favorite`, {
+            media_type: "movie",
+            media_id: movieId,
+            favorite: isFavorite
+        }, {
+            headers: {
+                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TOKEN_AUTH}`,
+            },
+        });
+        return response.data;
+    }
+)
+
+export const getRecommendationsMovies = createAsyncThunk(
+    'movies/getRecommendationsMovies',
+    async (param: number) => {
+        const response = await axiosInstance.get(`/movie/${param}/recommendations`);
+        const data = addAttributes(response.data.results).slice(0, 6);
+        return data;
+    }
+)
 
 export const searchMediaByName = createAsyncThunk(
     'movies/searchMediaByName',
@@ -74,14 +115,7 @@ export const getMoviesVideoById = createAsyncThunk(
     },
 );
 
-export const getFavoriteMovies = createAsyncThunk(
-    'movies/getFavoriteMovies',
-    async () => {
-        const accound_id = localStorage.getItem('tokenUser');
-        const response = await axiosInstance.get(`/account/${accound_id}/favorite/movies`);
-        console.log('reduxresponse', response.data);
-    }
-)
+
 
 export const moviesSlice = createSlice({
     name: 'movies',
@@ -120,8 +154,7 @@ export const moviesSlice = createSlice({
             .addCase(getSimilarMovies.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(
-                getSimilarMovies.fulfilled,
+            .addCase(getSimilarMovies.fulfilled,
                 (state, action: PayloadAction<any>) => {
                     state.loading = false;
                     state.similarMoviesList = action.payload;
@@ -130,6 +163,31 @@ export const moviesSlice = createSlice({
                 },
             )
             .addCase(getSimilarMovies.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
+            })
+            .addCase(getFavoriteMoviesList.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getFavoriteMoviesList.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.favoriteMovieList = action.payload;
+                state.error = false
+            })
+            .addCase(getFavoriteMoviesList.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
+            })
+            .addCase(addFavoriteMovie.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(addFavoriteMovie.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.error = false
+            })
+            .addCase(addFavoriteMovie.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
                 state.message = action.error.message || 'Something went wrong';
@@ -178,6 +236,20 @@ export const moviesSlice = createSlice({
                 state.message = undefined;
             })
             .addCase(getMoviesVideoById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = true;
+                state.message = action.error.message || 'Something went wrong';
+            })
+            .addCase(getRecommendationsMovies.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getRecommendationsMovies.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.reccomendedMoviesList = action.payload;
+                state.error = true;
+                state.message = undefined;
+            })
+            .addCase(getRecommendationsMovies.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
                 state.message = action.error.message || 'Something went wrong';

@@ -31,12 +31,12 @@ const Profile = () => {
             `https://api.themoviedb.org/3/account?api_key=${process.env.NEXT_PUBLIC_API_KEY}&session_id=${sessionData.session_id}`
           );
           loginSuccessAction(accountData);
+          accessTokenAction(accountData);
         } catch (error) {
           console.error("Error fetching user details:", error);
         }
       };
 
-      accessTokenAction(request_token);
       fetchUserDetails();
     }
   }, [isAuthenticated, loginSuccessAction, router]);

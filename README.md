@@ -12,6 +12,14 @@ Woki's Coding Challenge
 - **Responsive Design:** Designed using Material UI components for a visually appealing and responsive user interface.
 - **User Authentication:**
   Users can log in to the application to access personalized features and save their preferences
+- **Favorites:**
+  Users can add movies to their list of favorites.
+- **Favorite Movies List:**
+  Users can view a list of their favorite movies.
+- **Recommendations:**
+  Users can view recommended movies based on their preferences.
+- **Dark mode:**
+  Users will be able to choose a light or dark mode for the website
 
 ## Technical Stack
 

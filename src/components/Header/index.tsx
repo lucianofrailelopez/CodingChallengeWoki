@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Login } from '../Login';
+import { LoginButton } from '../LoginButton';
 import { SearchComponent } from '../Search';
 import { SelectComponent } from "@/components/Select";
 import { SwitchComponent } from '../Switch';
@@ -11,7 +11,7 @@ export const Header = () => {
             <SelectComponent />
             <SwitchComponent />
             <SearchComponent />
-            <Login />
+            <LoginButton />
         </header >
     );
 };

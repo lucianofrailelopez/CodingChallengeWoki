@@ -1,6 +1,6 @@
 'use client';
 import { useAppDispatch } from '@/redux/store';
-import { getMovies, getMoviesById, searchMediaByName, getMoviesByGenre, getSimilarMovies, getMoviesVideoById, getFavoriteMovies } from '@/redux/movies/moviesSlice';
+import { getMovies, getMoviesById, searchMediaByName, getMoviesByGenre, getSimilarMovies, getMoviesVideoById, getFavoriteMoviesList, addFavoriteMovie, getRecommendationsMovies } from '@/redux/movies/moviesSlice';
 import { getGenresList } from '@/redux/genres/genresSlice';
 import { toggleDarkMode } from '@/redux/theme/themeSlice';
 
@@ -40,8 +40,16 @@ export const useMoviesActions = () => {
     };
 
     const getFavorites = () => {
-        dispatch(getFavoriteMovies());
+        dispatch(getFavoriteMoviesList());
     };
+
+    const addMovie = ({ movieId, isFavorite }: { movieId: number, isFavorite: boolean }) => {
+        dispatch(addFavoriteMovie({ movieId, isFavorite }));
+    }
+
+    const getRecommendations = (movieId: number) => {
+        dispatch(getRecommendationsMovies(movieId));
+    }
 
     return {
         getMedia,
@@ -53,5 +61,7 @@ export const useMoviesActions = () => {
         toggleTheme,
         getVideoKey,
         getFavorites,
+        addMovie,
+        getRecommendations
     };
 };
